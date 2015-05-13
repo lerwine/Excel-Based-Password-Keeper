@@ -1,29 +1,28 @@
 Private lRowNum As Long
+Private lOriginalName As String
+Private lOriginalUrl As String
+Private lOriginalLogin As String
+Private lOriginalPassword As String
+Private lOriginalPin As String
+Private lOriginalNotes As String
 
-Property Get RowNum() As Long
-    RowNum = lRowNum
-End Property
+Sub InitializeControls()
+    lRowNum = DataSheet.SelectedRow
+    lOriginalName = DataSheet.SelectedName
+    Me.NameTextBox.Text = lOriginalName
+    lOriginalUrl = DataSheet.SelectedUrl
+    Me.UrlTextBox.Text = lOriginalUrl
+    lOriginalLogin = DataSheet.SelectedLogin
+    Me.LoginTextBox.Text = lOriginalLogin
+    lOriginalPassword = DataSheet.SelectedPassword
+    Me.PasswordTextBox.Text = lOriginalPassword
+    lOriginalPin = DataSheet.SelectedPin
+    Me.PinTextBox.Text = lOriginalPin
+    lOriginalNotes = DataSheet.SelectedNotes
+    Me.NotesTextBox.Text = lOriginalNotes
+    Me.RowNumberTextBox.Text = lRowNum
+End Sub
 
-Property Let RowNum(value As Long)
-    Dim main_ws As Worksheet
-    
-    If value > 1 Then
-        If lRowNum > 0 Then
-            MsgBox "Another row is already being edited."
-        Else
-            Set main_ws = ActiveCell.Worksheet
-            lRowNum = value
-            Me.NameTextBox.Text = main_ws.Cells(value, 1).value
-            Me.UrlTextBox.Text = main_ws.Cells(value, 2).value
-            Me.LoginTextBox.Text = main_ws.Cells(value, 3).value
-            Me.PasswordTextBox.Text = main_ws.Cells(value, 4).value
-            Me.PinTextBox.Text = main_ws.Cells(value, 5).value
-            Me.NotesTextBox.Text = main_ws.Cells(value, 6).value
-            Me.RowNumberTextBox.Text = value
-        End If
-    End If
-End Property
- 
 Private Sub CancelCommandButton_Click()
     Unload Me
 End Sub
@@ -45,24 +44,27 @@ Private Sub MaskPinCheckBox_Change()
 End Sub
 
 Private Sub SaveCommandButton_Click()
-    Dim main_ws As Worksheet
-    Set main_ws = ActiveCell.Worksheet
+    Dim result As VbMsgBoxResult
     
-    main_ws.Cells(lRowNum, 1).value = Me.NameTextBox.Text
-    main_ws.Cells(lRowNum, 2).value = Me.UrlTextBox.Text
-    main_ws.Cells(lRowNum, 3).value = Me.LoginTextBox.Text
-    main_ws.Cells(lRowNum, 4).value = Me.PasswordTextBox.Text
-    main_ws.Cells(lRowNum, 5).value = Me.PinTextBox.Text
-    main_ws.Cells(lRowNum, 6).value = Me.NotesTextBox.Text
-    Unload Me
-End Sub
-
-Private Sub UserForm_Activate()
-    If lRowNum = 0 Then
-        If ActiveCell.Row < 2 Then
-            lRowNum = 2
-        Else
-            lRowNum = ActiveCell.Row
-        End If
+    DataSheet.SuspendChangeEvents = DataSheet.SuspendChangeEvents + 1
+    
+    If lOriginalName <> DataSheet.GetNameAt(lRowNum) Or lOriginalUrl <> DataSheet.GetUrlAt(lRowNum) _
+            Or lOriginalLogin <> DataSheet.GetLoginAt(lRowNum) Or lOriginalPassword <> DataSheet.GetPasswordAt(lRowNum) _
+            Or lOriginalPin <> DataSheet.GetPinAt(lRowNum) Or lOriginalNotes <> DataSheet.GetNotesAt(lRowNum) Then
+        result = MsgBox("Values on the spreadsheet have changed while this form was open. Do you want to save?", vbYesNo, "Changes detected")
+    Else
+        result = vbYes
     End If
+    
+    If result = vbYes Then
+        DataSheet.UpdateName lRowNum, Me.NameTextBox.Text
+        DataSheet.UpdateUrl lRowNum, Me.UrlTextBox.Text
+        DataSheet.UpdateLogin lRowNum, Me.LoginTextBox.Text
+        DataSheet.UpdatePassword lRowNum, Me.PasswordTextBox.Text
+        DataSheet.UpdatePin lRowNum, Me.PinTextBox.Text
+        DataSheet.UpdateNotes lRowNum, Me.NotesTextBox.Text
+        Unload Me
+    End If
+    
+    DataSheet.SuspendChangeEvents = DataSheet.SuspendChangeEvents - 1
 End Sub
