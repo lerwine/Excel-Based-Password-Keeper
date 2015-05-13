@@ -36,7 +36,7 @@ Property Get SelectedRowIndex() As Long
 End Property
 
 Property Let SelectedRowIndex(value As Long)
-    Dim prevSelected As Integer
+    Dim prevSelected As Long
     Dim prevActiveWks As Worksheet
     
     If SuspendChangeEvents > 0 Then
@@ -86,7 +86,7 @@ End Property
 
 Sub InitializeSelectedProperties()
     Dim prevActiveWks As Worksheet
-    Dim prevSelectedRowIndex As Integer
+    Dim prevSelectedRowIndex As Long
     
     SuspendChangeEvents = 1
     
@@ -118,9 +118,9 @@ End Sub
 
 Private Sub Worksheet_Change(ByVal Target As Range)
     Dim r As Range
-    Dim newRowNum As Integer
-    Dim startRowNum As Integer
-    Dim endRowNum As Integer
+    Dim newRowNum As Long
+    Dim startRowNum As Long
+    Dim endRowNum As Long
     
     If lSelectedRowId = ActiveCell.EntireRow.ID Then
         If Me.SuspendChangeEvents = 0 Then local_UpdateSelectedProperties
@@ -194,8 +194,8 @@ Sub EditSelectedRowIndexData()
     editForm.Show False
 End Sub
 
-Private Function local_UpdateCellValue(rowNum As Integer, colNum As Integer, value As String) As Boolean
-    Dim prevRow As Integer
+Private Function local_UpdateCellValue(rowNum As Long, colNum As Integer, value As String) As Boolean
+    Dim prevRow As Long
     Dim prevCol As Integer
     
     prevRow = SelectedRowIndex
@@ -206,7 +206,7 @@ Private Function local_UpdateCellValue(rowNum As Integer, colNum As Integer, val
     If prevRow = rowNum Then local_UpdateCellValue = True Else local_UpdateCellValue = False
 End Function
 
-Function UpdateCellValue(rowNum As Integer, colNum As Integer, value As String) As Boolean
+Function UpdateCellValue(rowNum As Long, colNum As Integer, value As String) As Boolean
     Dim prevActiveWks As Worksheet
     
     If rowNum > 1 Then
@@ -224,8 +224,8 @@ Function UpdateCellValue(rowNum As Integer, colNum As Integer, value As String) 
     End If
 End Function
 
-Private Function local_GetValueAt(rowNum As Integer, colNum As Integer) As String
-    Dim prevRow As Integer
+Private Function local_GetValueAt(rowNum As Long, colNum As Integer) As String
+    Dim prevRow As Long
     Dim prevCol As Integer
     
     prevRow = SelectedRowIndex
@@ -235,7 +235,7 @@ Private Function local_GetValueAt(rowNum As Integer, colNum As Integer) As Strin
     If prevRow <> rowNum Or prevCol <> colNum Then DataSheet.Cells(prevRow, prevCol).Activate
 End Function
 
-Function GetValueAt(rowNum As Integer, colNum As Integer) As String
+Function GetValueAt(rowNum As Long, colNum As Integer) As String
     Dim prevActiveWks As Worksheet
     
     If rowNum > 1 Then
@@ -253,50 +253,50 @@ Function GetValueAt(rowNum As Integer, colNum As Integer) As String
     End If
 End Function
 
-Sub UpdateName(rowNum As Integer, value As String)
+Sub UpdateName(rowNum As Long, value As String)
     If UpdateCellValue(rowNum, 1, value) Then lSelectedName = value
 End Sub
 
-Function GetNameAt(rowNum As Integer) As String
+Function GetNameAt(rowNum As Long) As String
     GetNameAt = GetValueAt(rowNum, 1)
 End Function
 
-Sub UpdateUrl(rowNum As Integer, value As String)
+Sub UpdateUrl(rowNum As Long, value As String)
     If UpdateCellValue(rowNum, 2, value) Then lSelectedUrl = value
 End Sub
 
-Function GetUrlAt(rowNum As Integer) As String
+Function GetUrlAt(rowNum As Long) As String
     GetUrlAt = GetValueAt(rowNum, 2)
 End Function
 
-Sub UpdateLogin(rowNum As Integer, value As String)
+Sub UpdateLogin(rowNum As Long, value As String)
     If UpdateCellValue(rowNum, 3, value) Then lSelectedLogin = value
 End Sub
 
-Function GetLoginAt(rowNum As Integer) As String
+Function GetLoginAt(rowNum As Long) As String
     GetLoginAt = GetValueAt(rowNum, 3)
 End Function
 
-Sub UpdatePassword(rowNum As Integer, value As String)
+Sub UpdatePassword(rowNum As Long, value As String)
     If UpdateCellValue(rowNum, 4, value) Then lSelectedPassword = value
 End Sub
 
-Function GetPasswordAt(rowNum As Integer) As String
+Function GetPasswordAt(rowNum As Long) As String
     GetPasswordAt = GetValueAt(rowNum, 4)
 End Function
 
-Sub UpdatePin(rowNum As Integer, value As String)
+Sub UpdatePin(rowNum As Long, value As String)
     If UpdateCellValue(rowNum, 5, value) Then lSelectedPin = value
 End Sub
 
-Function GetPinAt(rowNum As Integer) As String
+Function GetPinAt(rowNum As Long) As String
     GetPinAt = GetValueAt(rowNum, 5)
 End Function
 
-Sub UpdateNotes(rowNum As Integer, value As String)
+Sub UpdateNotes(rowNum As Long, value As String)
     If UpdateCellValue(rowNum, 6, value) Then lSelectedNotes = value
 End Sub
 
-Function GetNotesAt(rowNum As Integer) As String
+Function GetNotesAt(rowNum As Long) As String
     GetNotesAt = GetValueAt(rowNum, 6)
 End Function
