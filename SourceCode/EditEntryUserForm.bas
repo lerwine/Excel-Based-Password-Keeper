@@ -7,7 +7,7 @@ Private lOriginalPin As String
 Private lOriginalNotes As String
 
 Sub InitializeControls()
-    lRowNum = DataSheet.SelectedRow
+    lRowNum = DataSheet.SelectedRowIndex
     lOriginalName = DataSheet.SelectedName
     Me.NameTextBox.Text = lOriginalName
     lOriginalUrl = DataSheet.SelectedUrl
