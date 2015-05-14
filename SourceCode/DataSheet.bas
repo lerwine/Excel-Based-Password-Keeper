@@ -110,7 +110,7 @@ Private Sub local_UpdateSelectedProperties()
         lSelectedName = DataSheet.Cells(SelectedRowIndex, 1).value
         lSelectedUrl = DataSheet.Cells(SelectedRowIndex, 2).value
         lSelectedLogin = DataSheet.Cells(SelectedRowIndex, 3).value
-        lSelectedHasPassword = DataSheet.Cells(SelectedRowIndex, 4).value
+        lSelectedPassword = DataSheet.Cells(SelectedRowIndex, 4).value
         lSelectedPin = DataSheet.Cells(SelectedRowIndex, 5).value
         lSelectedNotes = DataSheet.Cells(SelectedRowIndex, 6).value
     End If
