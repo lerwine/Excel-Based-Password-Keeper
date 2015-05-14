@@ -170,21 +170,33 @@ Sub GoToNextRecord()
 End Sub
 
 Sub OpenSelectedUrl()
-    If Trim(SelectedUrl) <> "" Then ThisWorkbook.FollowHyperlink SelectedUrl, , True
+    If Trim(SelectedUrl) = "" Then
+        MsgBox "No URL defined."
+    Else
+        ThisWorkbook.FollowHyperlink SelectedUrl, , True
+    End If
 End Sub
 
 Sub CopySelectedPassword()
     Dim MyDataObj As New DataObject
     
-    MyDataObj.SetText SelectedPassword
-    MyDataObj.PutInClipboard
+    If SelectedPassword = "" Then
+        MsgBox "No password to copy."
+    Else
+       MyDataObj.SetText SelectedPassword
+        MyDataObj.PutInClipboard
+    End If
 End Sub
 
 Sub CopySelectedPin()
     Dim MyDataObj As New DataObject
     
-    MyDataObj.SetText SelectedPin
-    MyDataObj.PutInClipboard
+    If SelectedPin = "" Then
+        MsgBox "No pin to copy."
+    Else
+        MyDataObj.SetText SelectedPin
+        MyDataObj.PutInClipboard
+    End If
 End Sub
 
 Sub EditSelectedRowIndexData()
